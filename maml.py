@@ -30,6 +30,7 @@ class MAML(nn.Module):
         assert num_steps >= 1
         self._num_steps = num_steps
 
+        # Save the params(p) and their address(id(p)) in a dict.
         memo = {id(p): p for p in model.parameters()}
         self._model_symbol = copy.deepcopy(model, memo)
 
