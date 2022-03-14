@@ -32,10 +32,12 @@ class MAML(nn.Module):
 
         # Save the params(p) and their address(id(p)) in a dict.
         memo = {id(p): p for p in model.parameters()}
+        # self._model_symbol: copied model
         self._model_symbol = copy.deepcopy(model, memo)
 
         self._param_spec = {}
         self._make_param_spec(self._model_symbol)
+        # copied model params
         self._param_list = list(self._param_spec.keys())
 
         self._state_dict = None
@@ -60,6 +62,7 @@ class MAML(nn.Module):
         ]))
 
     def _per_task(self, support_x, support_y, query_x, query_y):
+        # self._param_list: copied model params
         param_list = self._param_list
         for i in range(self._num_steps):
             pred_y = self.model(support_x) if i == 0 else self._model_symbol(support_x)
