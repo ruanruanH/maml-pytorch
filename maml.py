@@ -42,9 +42,13 @@ class MAML(nn.Module):
 
     def _make_param_spec(self, module):
         for name in dir(module):
+            # get all attributes of module/model
             obj = getattr(module, name)
+            # get all prams of model
             if isinstance(obj, nn.Parameter):
+                # del params from model attributes
                 delattr(module, name)
+                # self._param_spec.keys() for obtaining model params
                 self._param_spec[obj] = (module, name)
         for child in module.children():
             self._make_param_spec(child)
